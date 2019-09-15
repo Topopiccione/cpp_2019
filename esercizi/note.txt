@@ -1,0 +1,26 @@
+Gli esercizi sono pensati per essere agnostici al sistema operativo su cui vengono scritti, compilati ed eseguiti.
+
+A seconda del sistema operativo a disposizione, si consiglia di usare:
+
+Windows: Visual Studio
+
+Linux: g++ e un editor di testo per la scrittura del programma
+
+Inoltre, tutti gli esercizi possono essere eseguiti attraverso una piattaforma di scrittura, compilazione ed esecuzione di codice C++ disponibili online
+A titolo indicativo, si consigliano questi siti:
+https://cpp.sh
+https://www.onlinegdb.com/online_c++_compiler
+
+
+--------------
+
+Istruzioni di compilazione su Linux:
+
+- scrivere il programma e salvarlo su un file avente estensione ".cpp"
+- aprire una shell, spostarsi nella cartella che contiene il file sorgente e compilare con il comando:
+g++ nomefile.cpp -o nome_exe.x
+- eseguire con:
+./nome_exe.x
+
+- programmi che utilizzano funzionalità del linguaggio introdotte dallo standard C++11 devono essere compilati con la realtiva opzione:
+g++ -std=c++11 nomefile.cpp -o nome_exe.x

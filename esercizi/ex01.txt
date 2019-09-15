@@ -1,0 +1,120 @@
+﻿1) Compilare ed eseguire il seguente programma:
+
+--- taglia qui ---
+#include <iostream>
+
+int main( void ) {
+	std::cout << "Ciao" << std::endl;
+	return 0;
+}
+--- taglia qui ---
+
+
+Salvarlo su un file di testo (prog01.cpp) e compilarlo con il comando:
+g++ prog01.cpp -o prog01
+
+Eseguire il programma con:
+./prog01
+
+
+
+2) Modificare il programma 1) in modo che venga richiesto un nome come input
+Traccia:
+- includere la libreria string con
+	#include <string>
+- dichiarare una variabile di tipo stringa con:
+	std::string nome;
+- usare l'input stream std::cin per leggere una parola da console ed assegnarla a nome
+	std::cin >> nome;
+- modificare l'istruzione di stampa, usando la concatenazione dell'operatore <<, ad es:
+	std::cout << "stringa di testo 1 " << "stringa di testo 2 " << nome << std::endl;
+Nota: questo tipo di concatenazione può essere usata anche con std::cin per leggere più variabili
+
+
+
+4) Scrivere un programma che prenda in ingresso un numero intero n, n >= 0, e stampi il risultato di 1 + 2 + 3 + .. + n
+Controllare che l'intero in input sia positivo!
+Scrivere più versioni dello stesso programma, usando un ciclo for, ciclo while, ciclo do..while.
+Fare in modo che output sia corretto in tutti e tre i casi, anche con input n = 0.
+Opzionale: scrivere anche versione con chiamata a funzione ricorsiva.
+Traccia:
+
+#include <iostream>
+
+bool controlloPositivo( int n ) {
+	// circa come in 3)
+}
+
+int main() {
+    int nn;
+    int res = 0;
+
+    std::cin >> nn;
+
+    if (!controlloPositivo( nn ))
+        return -1;
+
+	// Ciclo for
+    std::cout << "res(for) = " << res << std::endl;
+	
+	// Ciclo while
+    std::cout << "res(while) = " << res << std::endl;
+
+	// ciclo do..while
+    std::cout << "res(do) = " << res << std::endl;
+	
+	// funzione ricorsiva
+	/* .. */
+}
+
+
+
+3) Scrivere un programma che prende in input un numero intero positivo e stampa tutti i suoi divisori
+Completare la seguente traccia:
+
+#include <iostream>
+
+bool controlloPositivo( int n ) {
+    // Controlla che il numero sia positivo:
+	// return false se negativo o 0
+	// return true se positivo
+}
+
+int main() {
+    int nn;
+
+    std::cin >> nn;
+
+    if (!controlloPositivo( nn ))
+        return -1;
+
+    // Procedura di ricerca e stampa dei divisori
+	// Suggerimento: usare ciclo for / while da nn a 0
+	//		 usare l'operatore modulo "%" per calcolare il resto della divisione
+	
+    std::cout << std::endl;
+}
+
+
+
+5) Dato un array di N elementi, con N fissato durante la compilazione, scrivere una funzione che ricerchi il minimo e il massimo
+Traccia:
+
+#include <iostream>
+#include <stdlib.h>
+#define N 10
+
+int main() {
+    int numeri[N];
+
+   // Riempire e stampare array con numeri generati casualmente
+   // usare "rand() % 101" (per questo #include di stdlib)
+   // oppure usare <random> http://www.cplusplus.com/reference/random/
+
+    int maxN;
+    int minN;
+
+	// ricerca minN e maxN
+
+    std::cout << "Min: " << minN << " Max: " << maxN << std::endl;
+}
