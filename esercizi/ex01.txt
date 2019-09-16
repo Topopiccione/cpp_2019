@@ -102,7 +102,7 @@ Traccia:
 
 #include <iostream>
 #include <stdlib.h>
-#define N 10
+constexpr int N = 10;
 
 int main() {
     int numeri[N];
