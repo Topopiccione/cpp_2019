@@ -127,8 +127,9 @@ int main(int argc, char **argv) {
 	
 	// Controllo sulla lunghezza degli argomenti della linea di comando
 	if (argc > 1) {
-		std::string str( argv[1] );		// Converto il secondo argomento in stringa
-		n = std::stoi( str );			// Converto la stringa in un int
+		std::string str(argv[1]);		// Converto il secondo argomento in stringa
+		n = std::stoi(str);			// Converto la stringa in un int (per compilatori che supportano C++11
+		// n = std::atoi(str.c_str());		// Versione compatibile con C++98
 	} else {
 		// Leggi n da std::cin
 	}
