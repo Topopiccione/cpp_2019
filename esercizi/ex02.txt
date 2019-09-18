@@ -1,0 +1,155 @@
+﻿Stream e container
+------------------
+30) Calcolare il valore della radice quadrata di 18.24 e memorizzarlo in una variabile di tipo double chiamata "laradice".
+Stampare a terminale il valore di "laradice" 10 volte, incrementando progressivamente il numero di cifre decimali visualizzato,
+partendo da 0 cifre decimali, fino a 9 cifre decimali.
+Utilizzare lo stream manipulator "fixed", "precision()" o la funzione "std::setprecision()" per alterare il numero di cifre decimali 
+visualizzate da std::cout.
+Come si comporta precision(<numero negativo>)?
+Confrontare i risultati dei manipulator "fixed" e "scientific":
+http://www.cplusplus.com/reference/ios/fixed/
+http://www.cplusplus.com/reference/ios/scientific/
+
+Es. di soluzione:
+4
+4.3
+4.27
+4.271
+4.2708
+4.27083
+...
+
+// Traccia:
+#include <iostream>	// std::cout, std::fixed, std::scientific, std::precision
+#include <iomanip>	// stream manipulators - solo per std::setprecision()
+#include <cmath>	// per la funzione sqrt()
+
+int main(void) {
+	double laradice = ...
+	
+	// Qui va inserito il modificatore di cout "fixed"
+
+	// con precision()
+	for (int i = 0; ...) {
+		std::cout.precision(....);
+		std::cout << ...;
+	}
+
+	// con setprecision()
+	for ... {
+		std::cout << ... << std::setprecision(...) << ... ;
+	}
+}
+
+
+
+
+16) scrivere un programma che stampi a console i caratteri di una stringa in esadecimale
+es: "Vuoi un altro tipo di colazione?"
+56 75 6f 69 20 75 6e 20 61 6c 74 72 6f 20 74 69 70 6f 20 64 69 20 63 6f 6c 61 7a 69 6f 6e 65 3f
+
+// Traccia:
+#include <iostream>
+#include <string>
+
+int main( void ) {
+    std::string str("Vuoi un altro tipo di colazione?");
+    
+    // è sufficiente stampare su cout la stringa in formato corretto.
+    // cercare uno stream manipulator che faccia al caso nostro:
+    // http://en.cppreference.com/w/cpp/io/manip
+    // Esattamente come std::endl, andrà incluso nella "catena" degli <<
+	
+	std::cout << ...;	// qui il manipulator
+	for (...) {
+		std::cout << ...
+	}
+    
+    return 0;
+}
+
+
+
+10) The shining: scrivere un programma che apra un file out.txt e scriva in esso la frase "All work and no play makes Jack a dull boy" 25472 volte, andando a capo ad ogni frase.
+Per questo esercizio, usare il compilatore online https://repl.it/languages/cpp
+
+Suggerimenti e traccia:
+- includere <fstream>
+- includere <string>
+- dichiarare e definire un ofstream (vedi http://www.cplusplus.com/reference/fstream/ofstream/ )
+- stampare la frase (in un loop). La sintassi di scrittura su file è la stessa che viene 
+- chiudere il file (IMPORTANTE!)
+
+// Suggerimenti:
+// Il costruttore di ofstream apre automaticamente il file
+std::ofstream fileDiOutput( "nomefile.txt", std::ios::out );
+// La sintassi di accesso al file in scrittura è uguale a quella usata per stampare a terminale con std::cout
+std::cout << "Questa stringa viene stampata a terminale" << std::endl;
+fileDiOutput << "Questa stringa viene salvata su un file" << std::endl;
+
+
+
+
+11) Aprire il file out.txt generato da 10) e contare le parole. Questa volta, usare un ifstream.
+Anche per questo esercizio, usare il compilatore online https://repl.it/languages/cpp
+
+// Suggerimenti:
+// Il costruttore di ifstream apre automaticamente il file
+std::ifstream fin("nomefile.txt", std::ios::in);
+// La sintassi di accesso al file in lettura è uniforme con quella di accesso alla stream di input da console std::cin
+// Dichiarare una variabile di tipo stringa per prelevare le parole dal filestream.
+while( !fileIn.eof() ) {
+    fileIn >> variabile_di_tipo_stringa;
+    /* .. */
+}
+
+// Controllare che il risultato sia corretto! "All work and no play makes Jack a dull boy" sono 10 parole, moltiplicato per 25472...
+// Guardare la soluzione "prog11.cpp" e cercare di capire perchè...
+
+
+
+
+12) Riprendiamo in mano l'esercizio 5, ma questa volta modifichiamolo in modo che la dimensione dell'array sia inserita da console, oppure, letta da linea di comando. Assicurarsi che l'input sia valido.
+Usare alternativamente std::vector e un array di interi dinamicamente allocato con new.
+Bonus: nel caso degli array di interi, siamo capaci di accedere agli elementi del vettore senza usare l'operatore [], ma solo tramite aritmetica dei puntatori (operatori * e &)
+
+
+// Traccia:
+
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+#include <vector>
+
+int main(int argc, char **argv) {
+
+	int n;
+	
+	// Controllo sulla lunghezza degli argomenti della linea di comando
+	if (argc > 1) {
+		std::string str( argv[1] );		// Converto il secondo argomento in stringa
+		n = std::stoi( str );			// Converto la stringa in un int
+	} else {
+		// Leggi n da std::cin
+	}
+	
+	// inserire eventuali controlli su n 
+	
+	// VERSIONE CON VECTOR:
+	std::vector<int> vettore(n);
+	
+	// VERSIONE CON ARRAY DINAMICO
+	int * vettore = new int[n];
+	
+	
+	// Riempio il vettore in maniera casuale, come esercizio 5
+	// Cerco max e min, come esercizio 5
+	// Stampo elementi del vettore, il max e il min, come esercizio 5
+	
+	
+	// SOLO VERSIONE ARRAY DINAMICO
+	delete[] vettore;
+	
+	return 0;
+
+}
