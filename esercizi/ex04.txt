@@ -23,6 +23,7 @@ prog21_vocabolario.h
 #include <fstream>
 #include <vector>
 #include <string>
+#include <time.h>
 
 class Vocabolario {
 public:
@@ -33,41 +34,104 @@ public:
 private:
 	std::string fileNm;					// nome del file
 	std::fstream fin;					// oggetto fstream: è il file da cui prelevare le parole
-	std::vector<std::string> diz;		// container per le parole; io ho usato vector, ma quale potrebbe essere più appropriato?
+	std::vector<std::string> voc;		// container per le parole; io ho usato vector, ma quale potrebbe essere più appropriato?
 };
-----------------------------
+-----------------------------
 
 Implementare la classe seguendo il paradigma RAII prevede che la risorsa fstream venga allocata nel costruttore e rilasciata nel distruttore. Nel costruttore, inserire anche la procedura di lettura delle parole dal file.
 
 
 prog21_vocabolario.cpp
 -----------------------------
+#include "prog21_vocabolario.h"
+
 Vocabolario::Vocabolario( std::string filename ): fileNm( filename ) {
 	// apri fin
-	// leggi fin fino alla fine del file e diz.push_back di ogni parola nel container
+	std::ifstream fin(/* .... */);
+	std::string tempWord;
+	
+	// leggi fin fino alla fine del file e voc.push_back di ogni parola nel container
 	while (!fin.eof()) {
-		/*  ...  */
+		fin >> tempWord;
+		/* .... */
 	}
+	std::cout << "Lette " << voc.size() << " parole." << std::endl;
+	
+	// inizializza il generatore random
+	srand(time(NULL));
 }
 
 Vocabolario::~Vocabolario() {
 	// Chiudi fin
+	/* .... */
 }
 		
 std::string Vocabolario::getRandomWord() {
 	// return di un elemento a caso di diz
+	int numeroRandom = rand() % voc.size();
+	
+	/* .... */
 }
 ------------------------------
+
 
 Il main dovrà contenere il costruttore di un oggetto di tipo Vocabolario e almeno una chiamata alla funzione getRandomWord()
 
 
+prog21_main.cpp
+------------------------------
+#include <iostream>
+#include "prog21_vocabolario.h"
+
+int main(void) {
+	Vocabolario vvv("parole.txt");
+	
+	for (int i = 0; i < 10; i++)
+		std::cout << vvv.getRandomWord() << std::endl;
+	
+	return 0;
+}
+------------------------------
 
 
-22 - 13 - 13_new) L'impiccato
+
+
+
+
+13) L'impiccato
 Il programma sceglie una parola a caso dal un dizionario e presenta all'utente una serie di caratteri "_" pari alla lunghezza della parola scelta.
 L'utente deve indovinare la parola, inserendo un carattere alla volta. Se il carattere immesso dall'utente è contenuto nella parola segreta, esso verrà stampato al posto del "_" nella relativa posizione corretta. Se il carattere immesso dall'utente non è contenuto nella parola segreta, il contatore dei tentativi viene decrementato.
 Il gioco termina quando l'utente ha indovinato tutti i caratteri della parola, oppure quando ha esaurito i tentativi.
+
+// Esempio di esecuzione:
+Lette 25 parole.
+Tentativo rimanenti:8 e
+_ _ _ _ _ _ _ e
+Tentativo rimanenti:8 a
+_ a _ _ _ _ _ e
+Tentativo rimanenti:8 i
+_ a _ _ _ i _ e
+Tentativo rimanenti:8 o
+_ a _ o _ i _ e
+Tentativo rimanenti:8 p
+_ a _ o _ i _ e
+Tentativo rimanenti:7 c
+c a _ o _ i _ e
+Tentativo rimanenti:7 l
+c a _ o _ i _ e
+Tentativo rimanenti:6 r
+c a r o _ i _ e
+Tentativo rimanenti:6 m
+c a r o _ i _ e
+Tentativo rimanenti:5 n
+c a r o _ i _ e
+Tentativo rimanenti:4 t
+c a r o t i _ e
+Tentativo rimanenti:4 d
+c a r o t i d e
+Ok, hai vinto. Ok, sei bravo. Ok, ora vai a fare altro.
+
+
 
 
 // Suggerimenti e traccia
@@ -79,28 +143,44 @@ e la parola corrente in un vettore di char. Questo vettore è lungo quanto la pa
 programma, ogni elemento è impostato a '_'.
 Se il giocatore indovina una lettera essa viene scritta nei "posti giusti" nella parola corrente.
 
+Quindi, le strutture dati che ho deciso di utilizzare sono queste:
+// La parola misteriosa da indovinare, scelta a caso dal dizionario
+	std::string parolaMisteriosa = vvv.getRandomWord();
+// Variabile temporanea: carattere di input, aggiornato ad ogni iterazione
+	char carattereImmesso;
+// Contatore dei caratteri mancanti. Inizializzato a parolaMisteriosa.size() e decrementato ogni volta che il giocatore
+// indovina un carattere della parola misteriosa
+	int caratteriMancanti = parolaMisteriosa.size();
+// Array di lavoro: lungo parolaMisteriosa.size(), inizializzato con tanti '_' quante le lettere della parola misteriosa;
+// gli '_' vengono rimpiazzati dalle lettere della parola misteriosa che il giocatore ha indovinato
+	std::vector<char> parolaCorrente(parolaMisteriosa.size(), '_');
+// Opzionale: array delle lettere già inserite dal giocatore
+	std::vector<char> lettereImmesse;
+
 
 Il main() può essere simile a questo:
 
 int main( void ) {
-	int maxTentativi = 8;
+	int maxTentativi = 5;
 	
 	// Creazione oggetto dizionario
 	// Estrazione di una parola da dizionario e memorizzazione parola in std::string parolaMisteriosa
 	
-	// init parolaCorrente con sequenza di '_'
-	// init caratteriMancanti = lunghezza parolaMisteriosa
+	// init strutture dati come sopra
 
 	// while maxTentativi > 0
 		
 		// Stampa parolaCorrente
 		
 		std::cout << "Tentativo rimanenti: " << maxTentativi << " ";
-		// input lettera; miglioria: controllo che sia un carattere numerico che non sia già stata inserita
+		// input lettera + check
+		do {
+			// leggere da terminale e memorizzare carattere in "carattereImmesso"
+		} while (!letteraOk(carattereImmesso, lettereImmesse));
 
-		// ricerca della lettera inserita nella parola segreta:
-		// se è presente, update parolaCorrente, decremento caratteriMancanti
-		// se non è presente, maxTentativi--;
+		// test lettera + update display + update lettere usate
+		if (!testLettera(parolaMisteriosa, carattereImmesso, caratteriMancanti, parolaCorrente))
+			maxTentativi--;
 		
 		// Se caratteriMancanti == 0, allora esci dal while
 		
@@ -113,6 +193,45 @@ int main( void ) {
 	}
 	return 0;
 }
+-------------------------
+
+
+La funzione
+bool letteraOk(const char carattereImmesso, std::vector<char> &lettereImmesse);
+controlla che il carattere inserito sia un carattere alfabetico valido, nel qual caso restituisce "true".
+Opzionalmente, controlla che il carattere non sia già stato inserito.
+Prende in ingresso il carattere immesso (come const) e il riferimento al vettore lettereImmesse [opzionale].
+
+
+La funzione
+bool testLettera(const std::string parolaMisteriosa, const char carattereImmesso, int &caratteriMancanti, std::vector<char> &parolaCorrente)
+forma il cuore del loop. Prende in ingresso la parola misteriosa (const), il carattere immesso (const), la referenza alla variabile che
+conta i caratteri mancanti e la referenza al vettore di lavoro parolaCorrente (queste ultime due entità vengono modificate dalla funzione).
+Svolge più funzioni, in particolare:
+- loop sui caratteri della parola misteriosa: confronta ognuno di questi caratteri con il carattere immesso
+  Se il carattere immesso coincide con quello della parola misterioda valutato in questo loop:
+  - decrementa caratteriMancanti
+  - sostituisce il carattere '_' in parolaCorrente con il carattere immesso
+- stampa parolaCorrente
+- se il carattere immesso è presente nella parola misteriosa restituisce "true".
+
+In breve, il codice è simile a questo:
+
+	bool letteraTrovata = false;
+	for (int i = 0; /* .... */) {
+		if (carattereImmesso == parolaMisteriosa[i]) {
+			/* .... */
+		}
+		std::cout << parolaCorrente[i] << " ";
+	}
+	std::cout << std::endl;
+	return letteraTrovata;
+	
+	
+Ricordo che per accedere al i-esimo carattere di una stringa è possibile utilizzare l'operatore []
+std::string stringa01 = "abcdefghijkl";
+stringa01[4]  // viene valutato in 'e'
+
 
 Note: purtroppo non sono a conoscenza di un metodo per acquisire un singolo carattere da console che sia totalmente portabile tra piattaforme.
 Io ho implementato la lettura del carattere come abbiamo fatto fin ora:
