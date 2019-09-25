@@ -1,0 +1,122 @@
+﻿21) Realizziamo un vocabolario. Anzi, quasi.
+parole.txt è un file di testo che contiene parole singole, separate da <invio> e scritte con caratteri minuscoli. 
+Es:
+marmotta
+marmitta
+cammello
+corteccia
+...
+Scriviamo una classe "Vocabolario" i cui compiti sono:
+- aprire il file parole.txt
+- leggere tutte le parole contenute nel file e memorizzarle in un vettore contenuto nella classe stessa
+- chiudere il file
+Oltre a queste funzionalità di base, scrivere una funzione membro che restituisca una parola a caso tra quelle memorizzate nel vettore.
+Nello scrivere la classe, utilizzare i concetti di RAII visti a lezione!
+Scrivere un semplice main di esempio per testare la classe
+
+//Suggerimenti e traccia:
+La classe è dichiarata nel seguente modo:
+
+prog21_vocabolario.h
+----------------------------
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+
+class Vocabolario {
+public:
+	Vocabolario(std::string filename);	// costruttore pubblico, prende il nome file come parametro
+	~Vocabolario();						// distruttore pubblico
+	std::string getRandomWord();		// funzione che restituisce una parola a caso, tra quelle presenti in elenco
+
+private:
+	std::string fileNm;					// nome del file
+	std::fstream fin;					// oggetto fstream: è il file da cui prelevare le parole
+	std::vector<std::string> diz;		// container per le parole; io ho usato vector, ma quale potrebbe essere più appropriato?
+};
+----------------------------
+
+Implementare la classe seguendo il paradigma RAII prevede che la risorsa fstream venga allocata nel costruttore e rilasciata nel distruttore. Nel costruttore, inserire anche la procedura di lettura delle parole dal file.
+
+
+prog21_vocabolario.cpp
+-----------------------------
+Vocabolario::Vocabolario( std::string filename ): fileNm( filename ) {
+	// apri fin
+	// leggi fin fino alla fine del file e diz.push_back di ogni parola nel container
+	while (!fin.eof()) {
+		/*  ...  */
+	}
+}
+
+Vocabolario::~Vocabolario() {
+	// Chiudi fin
+}
+		
+std::string Vocabolario::getRandomWord() {
+	// return di un elemento a caso di diz
+}
+------------------------------
+
+Il main dovrà contenere il costruttore di un oggetto di tipo Vocabolario e almeno una chiamata alla funzione getRandomWord()
+
+
+
+
+22 - 13 - 13_new) L'impiccato
+Il programma sceglie una parola a caso dal un dizionario e presenta all'utente una serie di caratteri "_" pari alla lunghezza della parola scelta.
+L'utente deve indovinare la parola, inserendo un carattere alla volta. Se il carattere immesso dall'utente è contenuto nella parola segreta, esso verrà stampato al posto del "_" nella relativa posizione corretta. Se il carattere immesso dall'utente non è contenuto nella parola segreta, il contatore dei tentativi viene decrementato.
+Il gioco termina quando l'utente ha indovinato tutti i caratteri della parola, oppure quando ha esaurito i tentativi.
+
+
+// Suggerimenti e traccia
+Usare la classe creata nell'esercizio 21 come generatore di parole casuali.
+
+E' possibile modellizzare il gioco con una classe, ma anche un approcio puramente procedurale va bene!
+Le strade per risolvere il problema sono molte, io ho scelto di memorizzare la parola segreta in una stringa
+e la parola corrente in un vettore di char. Questo vettore è lungo quanto la parola segreta e all'avvio del
+programma, ogni elemento è impostato a '_'.
+Se il giocatore indovina una lettera essa viene scritta nei "posti giusti" nella parola corrente.
+
+
+Il main() può essere simile a questo:
+
+int main( void ) {
+	int maxTentativi = 8;
+	
+	// Creazione oggetto dizionario
+	// Estrazione di una parola da dizionario e memorizzazione parola in std::string parolaMisteriosa
+	
+	// init parolaCorrente con sequenza di '_'
+	// init caratteriMancanti = lunghezza parolaMisteriosa
+
+	// while maxTentativi > 0
+		
+		// Stampa parolaCorrente
+		
+		std::cout << "Tentativo rimanenti: " << maxTentativi << " ";
+		// input lettera; miglioria: controllo che sia un carattere numerico che non sia già stata inserita
+
+		// ricerca della lettera inserita nella parola segreta:
+		// se è presente, update parolaCorrente, decremento caratteriMancanti
+		// se non è presente, maxTentativi--;
+		
+		// Se caratteriMancanti == 0, allora esci dal while
+		
+
+	if (caratteriMancanti == 0)
+		std::cout << "Ok, hai vinto. Ok, sei bravo. Ok, ora vai a fare altro." << std::endl;
+	else {
+		std::cout << "Hai rovinato tutto, come tuo solito." << std::endl;
+		std::cout << "Davvero, non ho parole - a parte quella segreta, ovviamente, che era: " << parolaMisteriosa << std::endl;
+	}
+	return 0;
+}
+
+Note: purtroppo non sono a conoscenza di un metodo per acquisire un singolo carattere da console che sia totalmente portabile tra piattaforme.
+Io ho implementato la lettura del carattere come abbiamo fatto fin ora:
+std::cin >> "stringa"
+inCarattare = "stringa"[0]
+quindi il carattere di ingresso sarà il primo carattere dell'input dalla console. 
+
